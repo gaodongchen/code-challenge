@@ -1,0 +1,31 @@
+## Example configuration:
+# upstream fastcgi_backend {
+#    # use tcp connection
+#    # server  127.0.0.1:9000;
+#    # or socket
+#    server   unix:/var/run/php/php7.4-fpm.sock;
+# }
+# server {
+#    listen 80;
+#    server_name code-challenge.dev;
+#    set $CCY_ROOT /var/www/code-challenge;
+#    include /vagrant/code-challenge/nginx.conf.sample;
+# }
+#
+
+root $CCY_ROOT/web;
+
+index index.php;
+autoindex off;
+charset UTF-8;
+
+location / { 
+    try_files $uri $uri/ /index.php?$query_string;
+}   
+
+location ~ \.php$ {
+    fastcgi_pass   fastcgi_backend;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    include        fastcgi_params;
+}   
