@@ -29,9 +29,6 @@ echo GridView::widget([
         't_status' => [
             'attribute' => 't_status',
             'filter' => ['ok' => 'ok', 'hold' => 'hold'],
-        ],
-        [
-            'class' => 'yii\grid\ActionColumn',
         ]
     ],
 ]);
