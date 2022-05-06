@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Supplier;
+use app\models\SupplierSearch;
 
 class SiteController extends Controller
 {
@@ -61,7 +63,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $searchModel = new SupplierSearch();
+        $dataProvider = $searchModel->search($this->request->get());
+        
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -124,5 +132,24 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    /**
+     * Export data to CSV
+     *
+     * @return void
+     */
+    public function actionExport()
+    {
+        $searchModel = new SupplierSearch();
+        $query = $searchModel->query($this->request->get());
+
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename="code-challenge-' . date('YmdHis') .'.csv"');
+        
+        echo "id,name,code,t_status \r\n";
+        foreach ($query->all() as $model) {
+            echo sprintf("%d,%s,%s,%s \r\n", $model->id, $model->name, $model->code, $model->t_status);
+        }
     }
 }
