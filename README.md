@@ -3,6 +3,10 @@ see [Document](https://www.wolai.com/cUoqfoQSb9bnAMQfYaXuGr)
 
 # Install
 
+## Requires
+ - PHP 7.4^
+ - MySQL 5.7^
+
 ```bash
 $ yii migrate
 ```
